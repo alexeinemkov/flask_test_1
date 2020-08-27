@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="container">
+Заданий в работе: {{ tasksInwork }}<br>
+Заданий выполнено: {{ tasksComplete }}<br>
+Счёт: {{ cash }}
+</section>
+<section class="container">
+    <div class="col-md-10 mx-auto">
+        <table class="table table-sm m-0">
+        <thead class="table-dark">
+           <tr>
+            <th scope="col" rowspan="2">Название</th>
+            <th scope="col" rowspan="2">Описание</th>
+            <th scope="col" rowspan="2">Откуда</th>
+            <th scope="col" rowspan="2">Куда</th>
+            <th scope="col" rowspan="2">Цена</th>
+            <th scope="col" rowspan="2">Дата</th>
+            <th scope="col" rowspan="2">Действия</th>
+           </tr>
+        </thead>
+        <tbody>
+        
+        {% for task in tasks%}
+        {% if task.complete==True %}
+        <tr class="table-success">
+        {% elif task.inwork==True %}
+        <tr class="table-info">
+        {% else %}
+        <tr class="table-danger">
+        {% endif %}                
+                <th scope="row">{{ task.title }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.address_from }}</td>
+                <td>{{ task.address_to }}</td>
+                <td>{{ task.price }}</td>
+                <td>{{ task.timestamp }}</td>
+                <td>
+                    {% if task.complete==True %}
+                    <i><b>Заказ выполнен</b></i>
+                    {% else %}
+                    <a href="{{ url_for('completeTask', taskId=task.id) }}"><button type="button" class="btn btn-outline-dark btn-sm">Завершить</button></a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

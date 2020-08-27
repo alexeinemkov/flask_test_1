@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="container">
+    <div class="col-md-8 mx-auto">
+    <h4>Редактирование пользователя - {{user.username}}</h4>
+    <form action="" method="post" class="row">
+    	{{ form.hidden_tag() }}
+        <div class="col-md-5">
+            {{ form.username.label }}
+            {{ form.username(value=user.username, class="form-control") }}
+            {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span><br>
+            {% endfor %}
+        	{{ form.role.label }}
+            {{ form.role(class="custom-select") }}
+            <p>
+            Телефон: {{ user.phone_number }}
+            </p>
+        </div>
+        <div class="col-md-5">
+            {{ form.password.label }}
+            {{ form.password(class="form-control") }}
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span><br>
+            {% endfor %}
+            {{ form.password2.label }}
+            {{ form.password2(class="form-control") }}
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span><br>
+            {% endfor %}
+            <p>Оставьте поля пустыми,чтобы не изменять пароль</p>
+        <p>{{ form.submit(class="btn btn-outline-dark") }}</p>
+        </div>
+    </form>
+    </div>
+</section>
+{% endblock %}

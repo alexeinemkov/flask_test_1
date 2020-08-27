@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="container">
+    <div class="col-md-6 mx-auto">
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+            {{ form.phone_number.label }}<br>
+            {{ form.phone_number(class="form-control") }}<br>
+            {% for error in form.phone_number.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            {{ form.password.label }}<br>
+            {{ form.password(class="form-control") }}<br>
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+        <p>{{ form.submit(class="btn btn-outline-dark") }}</p>
+    </form>
+    </div>
+    <a href="{{ url_for('signup') }}"><button type="button" class="btn btn-outline-dark btn-sm">Зарегистрироваться</button></a>
+    <a href="{{ url_for('createtasksfordriver') }}"><button type="button" class="btn btn-outline-dark btn-sm">Создать тестовые данные</button></a>
+</section>
+{% endblock %}

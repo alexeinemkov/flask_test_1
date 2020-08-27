@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	{% if title %}
+	<title>{{ title }}</title>
+	{% else %}
+	<title>Link AN</title>
+	{% endif %}
+	<link rel="shortcut icon" href="{{ url_for('static',filename='assets/favicon.png') }}" type="image/png">
+  <link rel="stylesheet" href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}">
+
+  <script href="{{ url_for('static',filename='vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+  <script href="{{ url_for('static',filename='vendor/jquery/jquery.min.js') }}"></script>
+
+	<link rel="stylesheet" href="{{ url_for('static',filename='styles/core.css') }}">
+
+  <script>
+    $( document ).ready( function () {
+        var url = window.location.href.substr( window.location.href.lastIndexOf( '/' ) );
+        // console.log(url);
+        $( '.navbar-nav li a' ).each( function () {
+            if( $( this ).attr( 'href' ) === url || $( this ).attr( 'href' ) === '' ) {
+                $( this ).parent( 'li' ).addClass( 'active' );
+            }
+        });
+    });     
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+  </script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark  bg-dark"> <!-- fixed-top -->
+      <a class="navbar-brand" href="{{ url_for('index') }}">Link AN</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          {% if current_user.role=='admin' %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('users') }}">Пользователи</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('index') }}">Задания</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('driverTasks') }}">Мои задания (driver)</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('senderTasks') }}">Мои задания (sender)</a>
+          </li>
+          {% else %}
+            {% if current_user.role=='driver' %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('index') }}">Задания</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('driverTasks') }}">Мои задания</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('senderTasks') }}">Мои задания</a>
+            </li>
+            {% endif %}
+          {% endif %}
+
+          {% if current_user.is_anonymous %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('login') }}">Войти</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('logout') }}">Выйти [{{ current_user.username }}]</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+    <main role="main" class="container-fluid mx-auto">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="list-group col-md-4 mx-auto">
+            {% for message in messages %}
+            <li class="list-group-item">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="footer">
+    <hr />
+          <div class="container">
+            <span class="text-muted">&copy;<script>var d = new Date();
+            if (d.getFullYear()==2020){ document.write(d.getFullYear() + " г ");}
+          else { document.write("2020-" + d.getFullYear() + " г ");}</script><a href="https://github.com/alexeinemkov"> Github</a></span>
+          </div>
+    </footer>
+
+</body>
+</html>
